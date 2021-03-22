@@ -1,0 +1,14 @@
+{
+
+  "local": {
+    "DATABASE": {
+      "dbname": "",
+      "host": "",
+      "port": "",
+      "user": "",
+      "pass": ""
+    }
+  }
+
+
+}
