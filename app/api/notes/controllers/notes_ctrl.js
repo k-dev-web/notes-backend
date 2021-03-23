@@ -24,25 +24,24 @@ async function createNotes(req, res) {
     const time_stamp = req.body.time_stamp ? req.body.time_stamp : null;
     const description = req.body.description ? req.body.description : null;
     const category_id = req.body.category_id ? req.body.category_id : null;
-    if (!name || !moment.isDate(time_stamp) || !time_stamp || !description || !category_id || isNaN(category_id)) {
+    if (!name  || !time_stamp || !description || !category_id ) {
         return res.status(500).send({message: 'not full or incorrect data'})
     }
     let newNotes = {
         name: name,
-        time_stamp: time_stamp,
+        time_stamp: moment(time_stamp).toISOString(),
         description: description,
         category_id: category_id
     }
     try {
-        let category = await sequelize.models.Category.findOne({where: {id: category_id}});
-        console.log('category in create Notes');
-        console.log(category)
+        let category = await sequelize.models.Categories.findOne({where: {id: category_id}});
         if (!category) {
             return res.status(500).send({message: 'invalid category id'})
         }
         let note = await sequelize.models.Notes.create(newNotes);
         return res.status(200).send({message: 'Ok', data: note})
     } catch (error) {
+        console.log(error)
         return res.status(500).send({message: 'something is wrong, please try again', error: error})
     }
 
@@ -62,7 +61,7 @@ async function upNotes(req, res) {
     const time_stamp = req.body.time_stamp ? req.body.time_stamp : null;
     const description = req.body.description ? req.body.description : null;
     const category_id = req.body.category_id ? req.body.category_id : null;
-    if (!id || isNaN(id)) {
+    if (!id ) {
         return res.status(500).send({message: 'need id note'})
     }
 
@@ -71,15 +70,15 @@ async function upNotes(req, res) {
         newNotes.name = name;
     }
     if (time_stamp) {
-        if (!moment.isDate(time_stamp)) {
+       /*if (!moment.isDate(time_stamp)) {
             return res.status(500).send({message: 'incorrect format date'})
-        }
+        }*/
         newNotes.time_stamp = time_stamp;
     }
     if (category_id) {
-        if (isNaN(category_id)) {
+        /*if (isNaN(category_id)) {
             return res.status(500).send({message: 'incorrect category id'})
-        }
+        }*/
         newNotes.category_id = category_id;
     }
     if (description && description.length) {
@@ -87,7 +86,7 @@ async function upNotes(req, res) {
     }
 
     try {
-        let category = await sequelize.models.Category.findOne({where: {id: category_id}});
+        let category = await sequelize.models.Categories.findOne({where: {id: category_id}});
         if (!category) {
             return res.status(500).send({message: 'invalid category id'})
         }
@@ -112,7 +111,7 @@ async function getNotes(req, res) {
             attributes: ['id', 'name', 'time_stamp', 'description'],
             include: {
                 model: sequelize.models.Categories,
-                attributes: ['id','name'],
+                attributes: ['id', 'name'],
 
             }
 
@@ -138,9 +137,9 @@ async function deleteNotes(req, res) {
 
     try {
         let note = await sequelize.models.Notes.destroy({where: {id: id}});
-        return  res.status(200).send({message: 'ok'})
+        return res.status(200).send({message: 'ok'})
     } catch (error) {
-        return  res.status(500).send({message: 'something is wrong, please try again', error: error})
+        return res.status(500).send({message: 'something is wrong, please try again', error: error})
 
     }
 

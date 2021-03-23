@@ -58,7 +58,7 @@ async function upCategories(req, res) {
     }
 
     try {
-        let note = await sequelize.models.Notes.update(newCategory, {where: {id: id}});
+        let note = await sequelize.models.Categories.update(newCategory, {where: {id: id}});
         return res.status(200).send({message: 'Ok', data: note});
     } catch (error) {
         console.log('this', error)
@@ -88,10 +88,9 @@ async function getCategories(req, res) {
  * @return json
  */
 async function deleteCategories(req, res) {
-    const id = req.body.id ? req.body.id : null;
-
+    const id = req.query.id ? req.query.id : null;
     if (!id || isNaN(id)) {
-        return res.status(500).send({message: 'need id note'})
+        return res.status(500).send({message: 'need id category'})
     }
     try {
         let notes = await sequelize.models.Notes.findOne({
@@ -101,9 +100,10 @@ async function deleteCategories(req, res) {
             return res.status(500).send({message: 'delete all notes who have this category for deleting this category'})
 
         }
-        let category = await sequelize.models.Categories.destroy({where: {id: req.body.id}});
+        let category = await sequelize.models.Categories.destroy({where: {id: id}});
         return res.status(200).send({message: 'ok'})
     } catch (error) {
+        console.log(error)
         return res.status(500).send({message: 'something is wrong, please try again', error: error})
 
     }

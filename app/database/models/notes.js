@@ -17,10 +17,10 @@ module.exports = function(sequelize, DataTypes) {
         category_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            /*references: {
+            references: {
                 model: 'categories',
                 key: 'id'
-            }*/
+            }
 
         },
         description: {
@@ -45,7 +45,7 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Notes.associate = function(models) {
-        Notes.hasOne(models['Categories'], {foreignKey: 'id'})
+        Notes.belongsTo(models['Categories'], {foreignKey: 'category_id'})
     }
     return Notes;
 };

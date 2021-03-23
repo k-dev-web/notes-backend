@@ -24,15 +24,10 @@ module.exports = function(sequelize, DataTypes) {
         paranoid: true,
         tableName: 'categories',
         classMethods: {
-            associate: function (models) {
-            //    Categories.belongsTo(models.Notes, { foreignKey: 'category_id'})
 
-            }
         }
     });
 
-    Categories.associate = function(models) {
-       // Categories.hasMany(models['Notes'], {foreignKey: 'category_id'})
-    }
+
     return Categories;
 };
