@@ -1,8 +1,6 @@
 'use strict'
 
-
-
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     const Notes = sequelize.define('Notes', {
         id: {
             type: DataTypes.INTEGER,
@@ -27,24 +25,20 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-        time_stamp:{
+        time_stamp: {
             type: DataTypes.DATE
         }
-
-
     }, {
         timestamps: true,
         paranoid: true,
         tableName: 'notes',
         classMethods: {
             associate: function (models) {
-            //    Notes.hasOne(models.Categories, {foreignKey: 'id'})
-
             }
-            }
+        }
     });
 
-    Notes.associate = function(models) {
+    Notes.associate = function (models) {
         Notes.belongsTo(models['Categories'], {foreignKey: 'category_id'})
     }
     return Notes;

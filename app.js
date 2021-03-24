@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const cors =require('cors')
+const cors = require('cors')
 
 const app = express();
 
@@ -43,12 +43,11 @@ app.use(function (err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-    // render the error page
     res.status(err.status || 500);
     res.render('error');
 });
 //app.listen(config.port,'0.0.0.0').timeout = 1800000;
 app.listen(process.env.PORT || 5000, '0.0.0.0', function () {
-    console.log('server start :' + (process.env.PORT || 5000))
+    console.log('server start :' + (process.env.PORT || 5000));
 })
 module.exports = app;

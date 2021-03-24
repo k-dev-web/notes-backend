@@ -18,31 +18,31 @@ module.exports = {
  */
 async function createNotes(req, res) {
     if (Object.keys(req.body).length == 0) {
-        return res.status(500).send({message: 'empty data'})
+        return res.status(500).send({message: 'empty data'});
     }
     const name = req.body.name ? req.body.name : null;
     const time_stamp = req.body.time_stamp ? req.body.time_stamp : null;
     const description = req.body.description ? req.body.description : null;
     const category_id = req.body.category_id ? req.body.category_id : null;
-    if (!name  || !time_stamp || !description || !category_id ) {
-        return res.status(500).send({message: 'not full or incorrect data'})
+    if (!name || !time_stamp || !description || !category_id) {
+        return res.status(500).send({message: 'not full or incorrect data'});
     }
     let newNotes = {
         name: name,
         time_stamp: moment(time_stamp).toISOString(),
         description: description,
         category_id: category_id
-    }
+    };
     try {
         let category = await sequelize.models.Categories.findOne({where: {id: category_id}});
         if (!category) {
-            return res.status(500).send({message: 'invalid category id'})
+            return res.status(500).send({message: 'invalid category id'});
         }
         let note = await sequelize.models.Notes.create(newNotes);
-        return res.status(200).send({message: 'Ok', data: note})
+        return res.status(200).send({message: 'Ok', data: note});
     } catch (error) {
-        console.log(error)
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
+        console.log(error);
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
     }
 
 }
@@ -61,8 +61,8 @@ async function upNotes(req, res) {
     const time_stamp = req.body.time_stamp ? req.body.time_stamp : null;
     const description = req.body.description ? req.body.description : null;
     const category_id = req.body.category_id ? req.body.category_id : null;
-    if (!id ) {
-        return res.status(500).send({message: 'need id note'})
+    if (!id) {
+        return res.status(500).send({message: 'need id note'});
     }
 
     let newNotes = {};
@@ -70,9 +70,9 @@ async function upNotes(req, res) {
         newNotes.name = name;
     }
     if (time_stamp) {
-       /*if (!moment.isDate(time_stamp)) {
-            return res.status(500).send({message: 'incorrect format date'})
-        }*/
+        /*if (!moment.isDate(time_stamp)) {
+             return res.status(500).send({message: 'incorrect format date'})
+         }*/
         newNotes.time_stamp = time_stamp;
     }
     if (category_id) {
@@ -94,7 +94,7 @@ async function upNotes(req, res) {
 
         return res.status(200).send({message: 'Ok', data: note});
     } catch (error) {
-        console.log('this', error)
+        console.log('this', error);
         return res.status(500).send({message: 'something is wrong, please try again', error: error});
     }
 
@@ -116,10 +116,10 @@ async function getNotes(req, res) {
             }
 
         });
-        return res.status(200).send({message: 'ok', notes: notes})
+        return res.status(200).send({message: 'ok', notes: notes});
     } catch (error) {
-        console.log(error)
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
+        console.log(error);
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
 
     }
 
@@ -132,16 +132,12 @@ async function getNotes(req, res) {
 async function deleteNotes(req, res) {
     const id = req.body.id ? req.body.id : null;
     if (!id || isNaN(id)) {
-        return res.status(500).send({message: 'need id note'})
+        return res.status(500).send({message: 'need id note'});
     }
-
     try {
         let note = await sequelize.models.Notes.destroy({where: {id: id}});
         return res.status(200).send({message: 'ok'})
     } catch (error) {
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
-
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
     }
-
-
 }

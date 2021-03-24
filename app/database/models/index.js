@@ -1,17 +1,16 @@
 const Sequelize = require('sequelize');
-const fs=require('fs')
+const fs = require('fs')
 const path = require('path');
 const env = process.env.NODE_ENV || 'local';
 const config = require('../../config/config').get(env);
 
-console.log("db data", config.DATABASE)
+console.log("db data", config.DATABASE);
 
 
-const sequelize = new Sequelize(config.DATABASE.dbConnectUrl?config.DATABASE.dbConnectUrl:config.DATABASE.dbname, config.DATABASE.username, config.DATABASE.pass, {
+const sequelize = new Sequelize(config.DATABASE.dbConnectUrl ? config.DATABASE.dbConnectUrl : config.DATABASE.dbname, config.DATABASE.username, config.DATABASE.pass, {
     host: config.DATABASE.host,
     dialect: 'postgres',
 });
-
 
 
 let db = {};
@@ -30,14 +29,13 @@ try {
     Object.keys(db).forEach(function (modelName) {
         if ("associate" in db[modelName]) {
             db[modelName].associate(db);
-
             models.push(db[modelName]);
         }
     });
-     sequelize.sync({alter: true});
+    sequelize.sync({alter: true});
     console.log('Connection has been established successfully.');
 
-}catch (err){
+} catch (err) {
     console.error('Unable to connect to the database:', err);
 
 }

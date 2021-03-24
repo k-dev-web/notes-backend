@@ -17,18 +17,18 @@ async function createCategories(req, res) {
     const name = req.body.name ? req.body.name : null;
     const description = req.body.description ? req.body.description : null;
     if (!name) {
-        return res.status(500).send({message: 'need name'})
+        return res.status(500).send({message: 'need name'});
     }
     let newCategory = {
         name: name,
-        description:description
+        description: description
     }
     try {
 
         let category = await sequelize.models.Categories.create(newCategory);
-        return res.status(200).send({message: 'Ok', category: category})
+        return res.status(200).send({message: 'Ok', category: category});
     } catch (error) {
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
     }
 
 }
@@ -45,7 +45,7 @@ async function upCategories(req, res) {
     const name = req.body.name ? req.body.name : null;
     const description = req.body.description ? req.body.description : null;
     if (!id || isNaN(id)) {
-        return res.status(500).send({message: 'need id category'})
+        return res.status(500).send({message: 'need id category'});
     }
 
     let newCategory = {};
@@ -75,9 +75,9 @@ async function upCategories(req, res) {
 async function getCategories(req, res) {
     try {
         let categories = await sequelize.models.Categories.findAll({attributes: ['id', 'name', 'description']});
-        return res.status(200).send({message: 'ok', categories: categories})
+        return res.status(200).send({message: 'ok', categories: categories});
     } catch (error) {
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
 
     }
 
@@ -90,23 +90,20 @@ async function getCategories(req, res) {
 async function deleteCategories(req, res) {
     const id = req.query.id ? req.query.id : null;
     if (!id || isNaN(id)) {
-        return res.status(500).send({message: 'need id category'})
+        return res.status(500).send({message: 'need id category'});
     }
     try {
         let notes = await sequelize.models.Notes.findOne({
             where: {category_id: id}
         })
         if (notes) {
-            return res.status(500).send({message: 'delete all notes who have this category for deleting this category'})
+            return res.status(500).send({message: 'delete all notes who have this category for deleting this category'});
 
         }
         let category = await sequelize.models.Categories.destroy({where: {id: id}});
-        return res.status(200).send({message: 'ok'})
+        return res.status(200).send({message: 'ok'});
     } catch (error) {
         console.log(error)
-        return res.status(500).send({message: 'something is wrong, please try again', error: error})
-
+        return res.status(500).send({message: 'something is wrong, please try again', error: error});
     }
-
-
 }

@@ -1,7 +1,5 @@
 'use strict'
-
-
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
     const Categories = sequelize.define('Categories', {
         id: {
             type: DataTypes.INTEGER,
@@ -17,15 +15,11 @@ module.exports = function(sequelize, DataTypes) {
             type: DataTypes.STRING,
             allowNull: true
         },
-
-
     }, {
         timestamps: true,
         paranoid: true,
         tableName: 'categories',
-        classMethods: {
-
-        }
+        classMethods: {}
     });
 
 
